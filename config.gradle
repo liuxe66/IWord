@@ -1,0 +1,17 @@
+ext {
+    android = [
+            compileSdkVersion: 33,
+            minSdkVersion    : 21,
+            targetSdkVersion : 33,
+            applicationId    : "com.liuxe.iword",
+            versionCode      : 1,
+            versionName      : "1.0"
+    ]
+
+    getui = [
+            //正式key
+            GETUI_APP_ID    : "hUtHNPanZ3AxSHNpNqUHp8",
+            GETUI_APP_KEY   : "ioUCSZlXLC6wdP4hBZ0RR4",
+            GETUI_APP_SECRET: "Z7NDLs5KJY9vDPNcajSuh6"
+    ]
+}

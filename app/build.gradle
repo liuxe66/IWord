@@ -1,0 +1,147 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-parcelize'
+    id 'kotlin-kapt'
+}
+
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+
+def keystoreProperties = new Properties()
+
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+//获取时间戳
+static def getDate() {
+    def date = new Date()
+    def formattedDate = date.format('MMddHHmm')
+    return formattedDate
+}
+
+android {
+    namespace 'com.liuxe.iword'
+    compileSdk 33
+
+    signingConfigs {
+        signConfig {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
+    defaultConfig {
+        applicationId rootProject.ext.android.applicationId
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            //设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
+            abiFilters "armeabi-v7a", 'arm64-v8a'// "x86_64"
+        }
+    }
+
+    buildTypes {
+        release {
+            resValue "string", "app_name", "IWord"
+            buildConfigField("boolean", "LOG_DEBUG", "true")
+            buildConfigField("String", "BASE_URL", "\"https://xxx:8080/\"")
+            signingConfig signingConfigs.signConfig
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+        }
+
+        debug {
+            resValue "string", "app_name", "IWord-Dev"
+//            applicationIdSuffix ".debug"
+            buildConfigField("boolean", "LOG_DEBUG", "true")
+            buildConfigField("String", "BASE_URL", "\"https://xxx:8080/\"")
+            signingConfig signingConfigs.signConfig
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            def fileName
+            if (variant.buildType.name == 'debug') {
+                fileName = "StuChat-v${defaultConfig.versionName}-debug-${getDate()}.apk"
+            } else {
+                fileName = "StuChat-v${defaultConfig.versionName}-release-${getDate()}.apk"
+            }
+            outputFileName = fileName
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = 11
+        targetCompatibility = 11
+    }
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+
+    buildFeatures {
+        dataBinding = true
+        viewBinding true
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.appcompat:appcompat:1.6.0'
+    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    implementation "androidx.fragment:fragment-ktx:1.5.5"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
+
+    //请求框架
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
+    //log日志
+    implementation 'com.orhanobut:logger:2.2.0'
+    //appstartup 启动初始化工作
+    implementation "androidx.startup:startup-runtime:1.1.1"
+    //coil图片框架
+    implementation 'io.coil-kt:coil:2.2.2'
+    //沉浸式状态栏：https://github.com/gyf-dev/ImmersionBar
+    implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
+    //适配
+    implementation 'com.github.JessYanCoding:AndroidAutoSize:v1.2.1'
+    //阻止app崩溃
+    implementation 'cat.ereza:customactivityoncrash:2.2.0'
+    //事件传递  channel
+    implementation 'com.github.liangjingkanji:Channel:1.0.2'
+
+    implementation "androidx.room:room-runtime:2.5.0"
+    annotationProcessor "androidx.room:room-compiler:2.5.0"
+
+    // To use Kotlin annotation processing tool (kapt)
+    kapt "androidx.room:room-compiler:2.5.0"
+    //腾讯mmvk 替代shareprefrence
+    implementation 'com.tencent:mmkv:1.2.14'
+    //svga播放
+    implementation "com.github.yyued:SVGAPlayer-Android:2.6.1"
+
+    implementation "io.github.cymchad:BaseRecyclerViewAdapterHelper:4.0.0-beta04"
+    implementation "com.github.bumptech.glide:glide:4.9.0"
+
+    implementation 'androidx.core:core-splashscreen:1.0.0-beta02'
+
+    implementation 'com.airbnb.android:lottie:5.2.0'
+}

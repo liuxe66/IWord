@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_all"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#eff0fa"
+            android:orientation="vertical">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginEnd="36dp"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="learning.json"
+                app:lottie_loop="true" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="612单词"
+                android:textColor="@color/color_text_main"
+                android:textSize="20sp"
+                android:layout_marginTop="16dp"
+                />
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_highlight" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="48dp"
+                android:text="主要功能有单词闯关、英文选义、中文选词、听音选义、单词拼写以及单词pk"
+                android:textColor="@color/color_text_main"
+                android:textSize="14sp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/shape_word_item_bg"
+                android:padding="16dp"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:id="@+id/tv_book"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                      app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="四级词库"
+                    android:textColor="@color/color_text_main"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="切换词库"
+                    app:layout_constraintStart_toEndOf="@id/tv_book"
+                    app:layout_constraintTop_toTopOf="@id/tv_book"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_book"
+                    android:textSize="14sp"
+                    android:layout_marginStart="16dp"
+                    android:drawableEnd="@drawable/ic_switch_24"
+                    android:drawablePadding="2dp"
+                    android:textColor="@color/color_word"/>
+                <TextView
+                    android:id="@+id/tv_word_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/tv_book"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:textColor="@color/color_word"
+                    android:text="0/2000"
+                    android:layout_marginTop="16dp"/>
+                <com.liuxe.iword.widget.ZzHorizontalProgressBar
+                    android:id="@+id/progress_word"
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:layout_marginTop="6dp"
+                    app:layout_constraintTop_toBottomOf="@id/tv_word_num"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:zpb_bg_color="@color/color_bg"
+                    app:zpb_pb_color="@color/color_word"
+                    app:zpb_max="100"
+                    app:zpb_show_mode="round_rect"/>
+
+                <TextView
+                    android:id="@+id/tv_use"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/shape_word_btn_bg"
+                    android:paddingStart="36dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="36dp"
+                    android:paddingBottom="8dp"
+                    android:text="开始背单词吧"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/progress_word"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="#f7f8fa"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_fire" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="6dp"
+                        android:text="今日单词"
+                        android:textColor="@color/color_text_main"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_fire" />
+                </LinearLayout>
+
+
+                <com.liuxe.iword.widget.AutoPollRecyclerView
+                    android:id="@+id/rv_today_word"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp" />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/con_level"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/shape_word_item_bg"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:id="@+id/iv_word_level"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/ic_word_level_24"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_word_level"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="单词闯关"
+                        android:textColor="@color/color_text_main"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="@id/iv_word_level"
+                        app:layout_constraintTop_toBottomOf="@id/iv_word_level" />
+
+                    <TextView
+                        android:id="@+id/tv_word_level_des"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="每关10个单词，选择题的形式，综合训练单词的记忆程度，只有全部单词选择正确才能达成闯关成功。"
+                        android:textColor="@color/color_text_sub"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="@id/iv_word_level"
+                        app:layout_constraintTop_toBottomOf="@id/tv_word_level" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/shape_word_item_bg"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:id="@+id/iv_word_pk"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/ic_word_pk_24"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_word_pk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="单词PK"
+                        android:textColor="@color/color_text_main"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="@id/iv_word_pk"
+                        app:layout_constraintTop_toBottomOf="@id/iv_word_pk" />
+
+                    <TextView
+                        android:id="@+id/tv_word_pk_des"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="对战挑战10个单词，选择题的形式，每道题有10秒钟时间，综合训练单词的记忆程度，答对题目数量多的获胜。"
+                        android:textColor="@color/color_text_sub"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="@id/iv_word_pk"
+                        app:layout_constraintTop_toBottomOf="@id/tv_word_pk" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/shape_word_item_bg"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:id="@+id/iv_word_voice2cn"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/ic_word_voice_24"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_word_voice2cn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="听音选义"
+                        android:textColor="@color/color_text_main"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="@id/iv_word_voice2cn"
+                        app:layout_constraintTop_toBottomOf="@id/iv_word_voice2cn" />
+
+                    <TextView
+                        android:id="@+id/tv_word_voice2cn_des"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="提供10个单词，选择题的形式，根据英语发音找出正确的汉语释义。"
+                        android:textColor="@color/color_text_sub"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="@id/iv_word_voice2cn"
+                        app:layout_constraintTop_toBottomOf="@id/tv_word_voice2cn" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/shape_word_item_bg"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:id="@+id/iv_word_en2cn"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/ic_word_en2cn_24"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_word_en2cn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="英文选词"
+                        android:textColor="@color/color_text_main"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="@id/iv_word_en2cn"
+                        app:layout_constraintTop_toBottomOf="@id/iv_word_en2cn" />
+
+                    <TextView
+                        android:id="@+id/tv_word_en2cn_des"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="提供10个单词，选择题的形式，根据英语找出正确的汉语释义。"
+                        android:textColor="@color/color_text_sub"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="@id/iv_word_en2cn"
+                        app:layout_constraintTop_toBottomOf="@id/tv_word_en2cn" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/shape_word_item_bg"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:id="@+id/iv_word_cn2en"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/ic_word_cn2en_24"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_word_cn2en"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="中文选义"
+                        android:textColor="@color/color_text_main"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="@id/iv_word_cn2en"
+                        app:layout_constraintTop_toBottomOf="@id/iv_word_cn2en" />
+
+                    <TextView
+                        android:id="@+id/tv_word_cn2en_des"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="提供10个单词，选择题的形式，根据中文找出正确的英文单词。"
+                        android:textColor="@color/color_text_sub"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="@id/iv_word_cn2en"
+                        app:layout_constraintTop_toBottomOf="@id/tv_word_cn2en" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/shape_word_item_bg"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:id="@+id/iv_word_spell"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/ic_word_spell_24"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_word_spell"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="单词拼写"
+                        android:textColor="@color/color_text_main"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="@id/iv_word_spell"
+                        app:layout_constraintTop_toBottomOf="@id/iv_word_spell" />
+
+                    <TextView
+                        android:id="@+id/tv_word_spell_des"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="提供10个单词，选择题的形式，对单词进行挖空。"
+                        android:textColor="@color/color_text_sub"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="@id/iv_word_spell"
+                        app:layout_constraintTop_toBottomOf="@id/tv_word_spell" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="24dp"
+                    android:background="@drawable/shape_bug_coffee_bg"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tv_support_tip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="想要支持？"
+                        android:textColor="@color/color_text_main"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_support"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/shape_btn_support_bg"
+                        android:paddingStart="24dp"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="24dp"
+                        android:paddingBottom="8dp"
+                        android:text="买一杯咖啡"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_support_tip" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingMultiplier="1.4"
+                android:padding="24dp"
+                android:text="本应用，完全免费，不会收集用户信息，不用登录，数据保留在本地，卸载之后数据将一并清除。再次安装使用会当成新用户来进行处理"
+                android:textColor="@color/color_text_main"
+                android:textSize="16sp" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginEnd="36dp"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="welcome.json"
+                app:lottie_loop="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</layout>
