@@ -1,11 +1,19 @@
 package com.liuxe.iword.ui.vm
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
 import com.liuxe.iword.base.BaseViewModel
-import com.liuxe.iword.utils.PrefUtils
-import com.liuxe.iword.data.bean.WordLevelQuestionFillBean
-import com.liuxe.iword.data.bean.WordLevelQuestionSelectBean
+import com.liuxe.iword.data.bean.WordListBean
+import com.liuxe.iword.data.bean.WordQuestion
+import com.liuxe.iword.data.bean.WordQuestionSelect
 import com.liuxe.iword.data.entity.Word
+import com.liuxe.iword.utils.PrefUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  *  author : liuxe
@@ -13,144 +21,168 @@ import com.liuxe.iword.data.entity.Word
  *  description :
  */
 class WordVM : BaseViewModel() {
+    private var wordsListStr by PrefUtils(PrefUtils.prefWordList, "")
+    private var wordsList = ArrayList<Word>()
+    private var wordsIndex by PrefUtils(PrefUtils.prefWordIndex, 1)
+    private var wordsSize by PrefUtils(PrefUtils.prefWordSize, 10)
 
-    private var wordsList: MutableList<Word> by PrefUtils(
-        PrefUtils.prefWordList, ArrayList()
-    )
-    private var wordsLevel by PrefUtils(PrefUtils.prefWordLevel, 1)
+    //问题集合
+    private var questionList = ArrayList<WordQuestion>()
 
-    private val _curQuestionLiveData = MutableLiveData<WordLevelQuestionSelectBean>()
-    var curQuestionLiveData = _curQuestionLiveData
+    //当前问题
+    private val _questionData = MutableLiveData<WordQuestion>()
+    var questionData = _questionData
 
+    //结束标志
+    private val _finishData = MutableLiveData<Boolean>()
+    var finishData = _finishData
+
+    //当前问题索引
     var curIndex = 0
 
-    var letter = "abcdefghijklmnopqrstuvwxyz"
+    //今日单词
+    var todayWordList = ArrayList<Word>()
+    var hasStudyWordNum = 0
+    var wordSize = 0
+
+    fun initData() = liveData<String>{
+        getCurData()
+        emit("success")
+    }
 
     /**
-     * 获取闯关单词集合
+     * 获取今日单词集合
      * @param level Int
      * @return MutableList<WordBean>
      */
-    fun getLevel() = wordsList.subList((wordsLevel - 1) * 10, wordsLevel * 10)
+    fun getCurData() {
+        wordsList.clear()
+        wordsList.addAll(Gson().fromJson(wordsListStr, WordListBean::class.java).wordList!!)
+        val data = wordsList.subList((wordsIndex - 1) * wordsSize, wordsIndex * wordsSize)
+        todayWordList.addAll(data)
 
+        hasStudyWordNum = (wordsIndex - 1) * wordsSize
+        wordSize = wordsList.size
 
-    /**
-     * 开始闯关
-     * 1.打乱单词顺序
-     * 2.按照新的排序取单词，当选错答案时，记录错题(陌生)，在全部问题结束之后，重新显示错题(模糊)
-     * 3.取单词，挖空填字母，考察拼写，记录错题(陌生)，在全部问题结束之后，重新显示错题(模糊)
-     * 4。全部结束，闯关完成。同时错题记录在数据库
-     */
-    fun startGame() {
-        curIndex = 0
-        nextQuestion()
     }
 
+    /**
+     * 初始化 今日问题
+     * @return LiveData<String>
+     */
+    fun initWordsQuestion() = viewModelScope.launch {
+        //1.根据今日单词生成今日练习题
+        //2.今日练习题添加中文选义，英文选义
+        withContext(Dispatchers.IO) {
+            getCurData()
 
-    fun nextQuestion() {
-        if (curIndex == getLevel().size) {
-            curIndex = 0
-        } else {
-            creatSelectQuestion(curIndex)
-            curIndex += 1
+            //组装今日考察单词问题列表
+            todayWordList.forEach { word ->
+                val selectList = creatSelectList(1)
+                selectList.add(
+                    WordQuestionSelect(
+                        word = word, state = 1, isAnswer = true
+                    )
+                )
+                //打乱顺序
+                selectList.shuffle()
+
+
+                //问题集合 添加question
+                questionList.add(
+                    WordQuestion(
+                        word = word, selectList = selectList, questionType = 1
+                    )
+                )
+            }
+
+            //组装今日考察单词问题列表
+            todayWordList.forEach { word ->
+                val selectList = creatSelectList(2)
+                selectList.add(
+                    WordQuestionSelect(
+                        word = word, state = 2, isAnswer = true
+                    )
+                )
+                //打乱顺序
+                selectList.shuffle()
+
+                //问题集合 添加question
+                questionList.add(
+                    WordQuestion(
+                        word = word, selectList = selectList, questionType = 2
+                    )
+                )
+            }
+
         }
+        creatQuestion()
     }
 
-    /**
-     * 选择题
-     * @param index Int
-     */
-    fun creatSelectQuestion(index: Int) {
-        var index1 = (100 until wordsList.size - 100).random()
-        var index2 = (100 until wordsList.size - 100).random()
-        var index3 = (100 until wordsList.size - 100).random()
+    fun creatSelectList(state: Int): ArrayList<WordQuestionSelect> {
+        val randomStart = 0
+        val randomEnd = wordsList.size
+
+        val index1 = (randomStart until randomEnd).random()
+
+        var index2 = (randomStart until randomEnd).random()
+        var index3 = (randomStart until randomEnd).random()
 
         while (index1 == index2) {
-            index2 = (100 until wordsList.size - 100).random()
+            index2 = (randomStart until randomEnd).random()
         }
 
         while (index1 == index3 || index2 == index3) {
-            index3 = (100 until wordsList.size - 100).random()
+            index3 = (randomStart until randomEnd).random()
         }
-
-        var selectList = ArrayList<String>()
-        selectList.add(wordsList[index1].trans!!)
-        selectList.add(wordsList[index2].trans!!)
-        selectList.add(wordsList[index3].trans!!)
-        selectList.add(getLevel()[index].trans!!)
-        selectList.shuffle()
-
-        _curQuestionLiveData.value = WordLevelQuestionSelectBean(
-            question = getLevel()[index].name!!,
-            selectList = selectList,
-            answer = getLevel()[index].trans!!
+        //选项集合
+        val selectList = ArrayList<WordQuestionSelect>()
+        selectList.add(
+            WordQuestionSelect(
+                word = wordsList[index1], state = state, isAnswer = false
+            )
         )
-    }
-
-    /**
-     * 创建填空题
-     */
-    fun creatInputQuestion(index: Int) {
-
-        val question = getLevel()[index].name!!
-
-        val selectList = ArrayList<Char>()
-        var fillList = ArrayList<Int>()
-        var input1: Int = question.indices.random()
-        var input2: Int = question.indices.random()
-        while (input1 == input2) {
-            input2 = question.indices.random()
-        }
-        if (question.length > 5) {
-            fillList.add(input1)
-            fillList.add(input2)
-            selectList.add(question[input1])
-            selectList.add(question[input2])
-            selectList.add(letter.random())
-            selectList.add(letter.random())
-            selectList.add(letter.random())
-            selectList.add(letter.random())
-
-        } else {
-            selectList.add(question[input1])
-            selectList.add(letter.random())
-            selectList.add(letter.random())
-            selectList.add(letter.random())
-            selectList.add(letter.random())
-            selectList.add(letter.random())
-        }
-
-        var fill = WordLevelQuestionFillBean(
-            question = question, fillList = fillList, selectList = selectList
+        selectList.add(
+            WordQuestionSelect(
+                word = wordsList[index2], state = state, isAnswer = false
+            )
         )
+        selectList.add(
+            WordQuestionSelect(
+                word = wordsList[index3], state = state, isAnswer = false
+            )
+        )
+        return selectList
     }
 
-
-    fun onSelect(position: Int, data: WordLevelQuestionSelectBean) {
-        if (data.selectList[position] == data.answer) {
-            //选对了
-            data.state = 2
+    /**
+     * 生成当前问题
+     * @returnviiveData<WordQuestion>
+     */
+    fun creatQuestion() = viewModelScope.launch {
+        if (curIndex != 0) {
+            delay(500)
+        }
+        if (curIndex == questionList.size) {
+            _finishData.value = true
+            wordsIndex++
         } else {
-            //选错了
-            data.state = 1
+            _questionData.value = questionList[curIndex]
+            curIndex++
         }
 
-        nextQuestion()
     }
 
     /**
-     *
+     * 答题
+     * @param answer Boolean
+     * @param wordQuestion WordQuestion
      */
-    fun onInput(position: Int, curIndex: Int) {
-
+    fun onSelect(answer: Boolean, wordQuestion: WordQuestion) {
+        if (!answer) {
+            questionList.add(wordQuestion)
+        }
+        creatQuestion()
     }
 
-    /**
-     * 背单词记录统计
-     * 统计内容：背了多少单词，背了几天，今日目标
-     * 在用户系统中记录
-     */
-    fun getUserWordData() {
-
-    }
 }

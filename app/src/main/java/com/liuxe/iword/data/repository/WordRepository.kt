@@ -1,10 +1,12 @@
 package com.liuxe.iword.data.repository
 
+import android.os.Parcelable
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.liuxe.iword.app.IWordApp
 import com.liuxe.iword.base.BaseRepository
 import com.liuxe.iword.data.bean.WordBean
+import com.liuxe.iword.data.bean.WordListBean
 import com.liuxe.iword.data.entity.Word
 import com.liuxe.iword.utils.PrefUtils
 import kotlinx.coroutines.Dispatchers
@@ -23,8 +25,8 @@ import java.lang.reflect.Type
  */
 class WordRepository : BaseRepository() {
 
-    private var wordsList: MutableList<Word> by PrefUtils(PrefUtils.prefWordList, ArrayList())
-    private var wordsLevel by PrefUtils(PrefUtils.prefWordLevel, 1)
+    private var wordsIndex by PrefUtils(PrefUtils.prefWordIndex, 1)
+    private var wordsList by PrefUtils(PrefUtils.prefWordList,"")
 
     /**
      * 加载单词
@@ -60,8 +62,9 @@ class WordRepository : BaseRepository() {
             )
             tempWordList.add(word)
         }
-        wordsList = tempWordList
 
+        var wordListBean = WordListBean(tempWordList)
+        wordsList = Gson().toJson(wordListBean)
         emit("success")
     }.flowOn(Dispatchers.IO)
 
@@ -71,8 +74,7 @@ class WordRepository : BaseRepository() {
      * @return Flow<String>
      */
     suspend fun clearWord() = flow {
-        wordsList = ArrayList<Word>()
-        wordsLevel = 1
+        wordsIndex = 1
         emit("success")
     }.flowOn(Dispatchers.IO)
 

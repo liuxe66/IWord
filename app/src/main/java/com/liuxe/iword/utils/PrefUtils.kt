@@ -1,6 +1,8 @@
 package com.liuxe.iword.utils
 
 import android.annotation.SuppressLint
+import android.os.Parcelable
+import com.liuxe.iword.data.entity.Word
 import com.tencent.mmkv.MMKV
 import java.io.*
 import kotlin.properties.ReadWriteProperty
@@ -14,8 +16,9 @@ import kotlin.reflect.KProperty
 class PrefUtils<T>(val name: String, private val default: T) : ReadWriteProperty<Any?, T> {
 
     companion object {
-        const val prefWordLevel = "preWordLevel"
+        const val prefWordIndex = "preWordIndex"
         const val prefWordList = "preWordList"
+        const val prefWordSize = "prefWordSize"
     }
 
     private val mmkv: MMKV by lazy {
@@ -54,7 +57,6 @@ class PrefUtils<T>(val name: String, private val default: T) : ReadWriteProperty
         }
         return res as T
     }
-
 
 
     /**
