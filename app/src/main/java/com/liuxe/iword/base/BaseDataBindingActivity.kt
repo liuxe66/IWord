@@ -1,10 +1,18 @@
 package com.liuxe.iword.base
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Bundle
+import android.text.TextUtils
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
@@ -33,7 +41,35 @@ abstract class BaseDataBindingActivity : AppCompatActivity() {
             toast(it.msg)
         })
 
+        mViewModel.mLoadingState.observe(this, Observer {
+            if (it) {
+                showLoadingDialog()
+            } else {
+                dissmissLoadingDialog()
+            }
+        })
+
         mViewModel
+    }
+
+    var loadingDialog: Dialog? = null
+    open fun showLoadingDialog() {
+        var builder = AlertDialog.Builder(this, R.style.TransparentDialog)
+
+        val contentView =
+            LayoutInflater.from(this).inflate(R.layout.dialog_loading, null)
+
+        builder.setView(contentView)
+        builder.setCancelable(false)
+        loadingDialog = builder.create()
+
+        loadingDialog?.show()
+    }
+
+    open fun dissmissLoadingDialog() {
+        runOnUiThread {
+            loadingDialog?.dismiss()
+        }
     }
 
     override fun getResources(): Resources {
@@ -78,5 +114,30 @@ abstract class BaseDataBindingActivity : AppCompatActivity() {
             .init()
     }
 
+    lateinit var centerTitleText: TextView
+    protected fun initToolBar(toolbar: Toolbar, title: String) {
+        toolbar.setNavigationIcon(R.drawable.black_back_24)
+        toolbar.navigationIcon?.setTint(resources.getColor(R.color.color_text_main))
+        toolbar.setNavigationOnClickListener { onBackPressed() }
+        centerTitleText = TextView(this)
+        setTitleCenter(toolbar, title, R.color.color_text_main)
 
+    }
+
+    private fun setTitleCenter(toolbar: Toolbar, title: String, color: Int) {
+
+        centerTitleText.setTextColor(ContextCompat.getColor(this, color))
+        centerTitleText.text = title
+        centerTitleText.textSize = 18f
+        centerTitleText.gravity = Gravity.CENTER
+        centerTitleText.setLines(1)
+        centerTitleText.ellipsize = TextUtils.TruncateAt.END
+        val layoutParams = Toolbar.LayoutParams(
+            Toolbar.LayoutParams.WRAP_CONTENT,
+            Toolbar.LayoutParams.WRAP_CONTENT
+        )
+        layoutParams.gravity = Gravity.CENTER
+        centerTitleText.layoutParams = layoutParams
+        toolbar.addView(centerTitleText)
+    }
 }

@@ -10,7 +10,7 @@ import java.io.Serializable
 
 data class WordBean(
     val name: String? = null,
-    val trans: List<String?>? = null,
+    val trans: List<String>? = null,
     val ukphone: String? = null,
     val usphone: String? = null
 ) : Serializable

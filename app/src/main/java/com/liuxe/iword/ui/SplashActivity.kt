@@ -7,6 +7,7 @@ import com.liuxe.iword.base.BaseDataBindingActivity
 import com.liuxe.iword.databinding.ActivitySplashBinding
 import com.liuxe.iword.ext.toActivity
 import com.liuxe.iword.ui.vm.MainVM
+import com.liuxe.iword.utils.PrefUtils
 import com.liuxe.iword.utils.Preference
 
 class SplashActivity : BaseDataBindingActivity() {
@@ -31,7 +32,13 @@ class SplashActivity : BaseDataBindingActivity() {
                 toActivity<MainActivity>()
             }
         }
+    }
 
+    override fun showLoadingDialog() {
+
+    }
+
+    override fun dissmissLoadingDialog() {
 
     }
 }

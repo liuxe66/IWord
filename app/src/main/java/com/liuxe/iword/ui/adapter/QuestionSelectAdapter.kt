@@ -37,25 +37,35 @@ class QuestionSelectAdapter : BaseQuickAdapter<WordQuestionSelect, QuestionSelec
 
             when (item?.state) {
                 1 -> {
-                    tvSelect.text = item.word.trans
+                    tvSelect.text = item.word.trans!!
                 }
                 2 -> {
                     tvSelect.text = item.word.name
                 }
+                3 -> {
+                    tvSelect.text = item.blank
+                }
             }
 
+            tvPosition.text = when(position){
+                0 -> "A"
+                1 -> "B"
+                2 -> "C"
+                3 -> "D"
+                else -> ""
+            }
             ivSelect.gone()
-            tvSelect.isSelected = false
-            tvSelect.throttleClick {
-                tvSelect.isSelected = true
+
+            if (item!!.isClick){
                 ivSelect.visible()
                 if (item!!.isAnswer) {
-                    ivSelect.load(R.drawable.white_ok_24)
+                    ivSelect.load(R.drawable.green_right_24)
                 } else {
-                    ivSelect.load(R.drawable.white_error_24)
+                    ivSelect.load(R.drawable.red_error_24)
                 }
-
-                listerner?.onItenClick(item)
+            }
+            tvSelect.throttleClick {
+                listerner?.onItemClick(position)
             }
 
         }
@@ -66,6 +76,6 @@ class QuestionSelectAdapter : BaseQuickAdapter<WordQuestionSelect, QuestionSelec
     }
 
     interface ItemClickListener{
-        fun onItenClick(item:WordQuestionSelect)
+        fun onItemClick(position:Int)
     }
 }

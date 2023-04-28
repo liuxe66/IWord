@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_bottom_bg"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_book"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textSize="16sp"
+            android:textColor="@color/color_text_main"
+            android:text="切换词本"
+            android:layout_margin="16dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_book"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            android:layout_margin="16dp"/>
+    </LinearLayout>
+</layout>

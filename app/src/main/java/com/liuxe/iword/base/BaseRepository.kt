@@ -1,10 +1,9 @@
 package com.liuxe.iword.base
 
-import com.liuxe.iword.utils.LogUtils
-import com.liuxe.iword.http.NetWorkHelper
+import com.liuxe.iword.data.api.ApiResult
 import com.liuxe.iword.http.NetExceptionHandle
-import com.liuxe.iword.http.remote.RemoteResponse
-import com.liuxe.iword.http.remote.RemoteResult
+import com.liuxe.iword.http.NetWorkHelper
+import com.liuxe.iword.utils.LogUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -21,17 +20,15 @@ abstract class BaseRepository {
      * @param request SuspendFunction0<RemoteResponse<T>>
      * @return Flow<RemoteResult<RemoteResponse<T>>>
      */
-    suspend fun <T> tryCatch(request: suspend () -> RemoteResponse<T>) = flow {
+    suspend fun <T> tryCatch(request: suspend () -> T) = flow {
         try {
-            val data: RemoteResponse<T> = request()
+            val data = request()
             //状态码 0 成功 其他都是出现错误
-            emit(RemoteResult.Success(data))
-            LogUtils.i("Success：${data.msg}")
-
+            emit(ApiResult.Success(data))
         } catch (e: Exception) {
             e.printStackTrace()
             val response = NetExceptionHandle.handleException(e)
-            emit(RemoteResult.Failure(response))
+            emit(ApiResult.Failure(response))
             LogUtils.i("Exception：${response.code} ${response.msg}")
         }
     }.flowOn(Dispatchers.IO)

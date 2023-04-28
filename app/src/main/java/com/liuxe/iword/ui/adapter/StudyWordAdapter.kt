@@ -7,39 +7,30 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.liuxe.iword.data.bean.WordBean
 import com.liuxe.iword.data.entity.Word
+import com.liuxe.iword.databinding.ItemStudyWordBinding
 import com.liuxe.iword.databinding.ItemTodayWordBinding
+import com.liuxe.iword.ext.gone
 
 /**
  *  author : liuxe
  *  date : 2023/4/18 09:22
  *  description :
  */
-class TodayWordAdapter(var list: List<Word>) :
-    BaseQuickAdapter<Word, TodayWordAdapter.VH>() {
+class StudyWordAdapter : BaseQuickAdapter<Word, StudyWordAdapter.VH>() {
 
     class VH(
         parent: ViewGroup,
-        val binding: ItemTodayWordBinding = ItemTodayWordBinding.inflate(
+        val binding: ItemStudyWordBinding = ItemStudyWordBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         ),
     ) : RecyclerView.ViewHolder(binding.root)
 
     override fun onBindViewHolder(holder: VH, position: Int, item: Word?) {
         holder.binding.apply {
-            tvWordName.text = list[position % list.size].name
-            tvWordTrans.text = list[position % list.size].trans!!
-
-            tvType.isSelected = list[position % list.size].isError!!
-            if (list[position % list.size].isError){
-                tvType.text = "review"
-            } else {
-                tvType.text = "new"
-            }
+            tvWordName.text = item!!.name
+            tvWordTrans.text = item!!.trans!!
+            tvType.gone()
         }
-    }
-
-    override fun getItemCount(items: List<Word>): Int {
-        return Int.MAX_VALUE;
     }
 
 

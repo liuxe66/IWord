@@ -13,22 +13,34 @@
             android:id="@+id/tv_select"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/select_btn_bg"
-            android:textSize="14sp"
-            android:textColor="@color/select_text_color"
+            android:background="@drawable/shape_word_item_bg"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/color_text_main"
             android:gravity="center_horizontal"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
-            android:paddingStart="36dp"
-            android:paddingEnd="36dp" />
+            android:paddingStart="46dp"
+            android:paddingEnd="46dp" />
 
+        <TextView
+            android:id="@+id/tv_position"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/color_text_main"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"/>
         <ImageView
             android:id="@+id/iv_select"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/white_error_24"
+            android:src="@drawable/red_error_24"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="10dp"/>
+            android:layout_marginStart="16dp"
+            android:background="@color/white"/>
     </FrameLayout>
 
 </layout>

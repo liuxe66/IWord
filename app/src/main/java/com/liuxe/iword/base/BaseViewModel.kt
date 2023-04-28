@@ -15,5 +15,6 @@ abstract class BaseViewModel : ViewModel() {
     val mMsg:MutableLiveData<String> = MutableLiveData()
     //消息提示
     val mException:MutableLiveData<ApiException> = MutableLiveData()
-
+    //loading
+    val mLoadingState:MutableLiveData<Boolean> = MutableLiveData()
 }

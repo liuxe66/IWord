@@ -41,7 +41,7 @@ abstract class BaseBottomSheetFragment : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(BottomSheetDialogFragment.STYLE_NORMAL, R.style.AppBottomSheet)
+        setStyle(STYLE_NORMAL, R.style.AppBottomSheet)
     }
     /**
      * 初始化默认的viewModel

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".app.IWordApp"
         android:allowBackup="true"
@@ -23,14 +26,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name=".ui.WordActivity"
+            android:name=".ui.WordQuestionActivity"
             android:exported="false" />
         <activity
             android:name=".ui.MainActivity"
             android:exported="false" />
-
+        <activity android:name=".ui.WordStudyActivity" />
+        <activity android:name=".ui.ErrorQuestionActivity" />
     </application>
 
 </manifest>

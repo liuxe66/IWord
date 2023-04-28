@@ -9,10 +9,11 @@ import kotlinx.parcelize.Parcelize
  *  description :
  */
 
-
+@Parcelize
 class Word(
     val name: String? = null,
     val trans: String? = null,
     val ukphone: String? = null,
     val usphone: String? = null,
-)
+    var isError:Boolean = false
+):Parcelable

@@ -32,4 +32,8 @@
         <attr name="zpb_border_color" format="color|reference" />
 
     </declare-styleable>
+
+    <style name="TransparentDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowBackground">@color/color_trans</item>
+    </style>
 </resources>

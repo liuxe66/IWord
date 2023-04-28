@@ -15,7 +15,7 @@ private val ymdhms = "yyyy-MM-dd HH:mm:ss"
 private val ymdhms2 = "yyyyMMddHHmmss"
 private val hms = "HH:mm:ss"
 private val hm = "HH:mm"
-private val ymd = "yyyy-MM-dd" // ?压脉带?
+private val ymd = "yyyy-MM-dd" //
 private val am = "AM" // 上午
 private val pm = "PM" // 下午
 
